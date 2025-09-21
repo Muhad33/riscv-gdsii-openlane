@@ -1,0 +1,22 @@
+# LibreLane run directories (huge intermediates; final views are copied to final/)
+flow/runs/
+examples/*/runs/
+
+# Simulation / generated outputs
+sim/
+hex/
+*.vcd
+*.vvp
+*.fst
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
