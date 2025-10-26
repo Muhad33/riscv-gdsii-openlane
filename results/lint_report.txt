@@ -1,0 +1,29 @@
+== Verilator lint (-Wall) ==
+Verilator 5.044 2026-01-01 rev v5.040
+- V e r i l a t i o n   R e p o r t: Verilator 5.044 2026-01-01 rev v5.040
+- Verilator: Built from 0.191 MB sources in 8 modules, into 0.146 MB in 3 C++ files needing 0.000 MB
+- Verilator: Walltime 0.140 s (elab=0.004, cvt=0.027, bld=0.000); cpu 0.057 s on 1 threads; alloced 21.473 MB
+verilator exit code: 0
+
+== Yosys structural checks ==
+
+11. Executing CHECK pass (checking for obvious problems).
+Checking module alu...
+Checking module control_unit...
+Checking module forwarding_unit...
+Checking module hazard_unit...
+Checking module imm_gen...
+Checking module regfile...
+Checking module riscv_core...
+Found and reported 0 problems.
+latches_and_sr_cells:
+0 objects.
+async_reset_or_set_ffs:
+0 objects.
+sync_ff_cells_(word-level):
+43 objects.
+memories_(regfile_expected):
+1 objects.
+combinational_loop_cells:
+0 objects.
+yosys exit code: 0
