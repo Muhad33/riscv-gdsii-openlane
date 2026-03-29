@@ -281,14 +281,26 @@ module riscv_core (
         end
     end
 
+    // Pipeline registers are split into CONTROL bits (valid, reg_write,
+    // mem_read/write, branch/jump, halt) and DATA bits (PC, operands, immediate,
+    // register numbers, ALU controls, results). A flush or bubble only has to
+    // clear the control bits: every use of the data bits further down the pipe
+    // is gated by a control bit (valid / reg_write / mem_read / mem_write /
+    // branch / jump / halt). Data bits are only cleared by rst. This keeps the
+    // branch -> flush signal off the reset multiplexers of ~200 data flops
+    // (it was the critical path), with identical architectural behaviour.
+
     // IF/ID
     always @(posedge clk) begin
-        if (rst || if_id_flush) begin
+        if (rst || if_id_flush)
             if_id_valid <= 1'b0;
+        else if (!if_id_hold)
+            if_id_valid <= 1'b1;
+
+        if (rst) begin
             if_id_pc    <= 32'd0;
             if_id_instr <= 32'h0000_0013;  // NOP
         end else if (!if_id_hold) begin
-            if_id_valid <= 1'b1;
             if_id_pc    <= pc;
             if_id_instr <= if_instr;
         end
@@ -305,6 +317,18 @@ module riscv_core (
             id_ex_jal       <= 1'b0;
             id_ex_jalr      <= 1'b0;
             id_ex_is_halt   <= 1'b0;
+        end else begin
+            id_ex_valid     <= 1'b1;
+            id_ex_reg_write <= c_reg_write;
+            id_ex_mem_read  <= c_mem_read;
+            id_ex_mem_write <= c_mem_write;
+            id_ex_branch    <= c_branch;
+            id_ex_jal       <= c_jal;
+            id_ex_jalr      <= c_jalr;
+            id_ex_is_halt   <= c_is_halt;
+        end
+
+        if (rst) begin
             id_ex_wb_sel    <= 1'b0;
             id_ex_alu_src_a <= 2'd0;
             id_ex_alu_src_b <= 1'b0;
@@ -318,14 +342,6 @@ module riscv_core (
             id_ex_rd        <= 5'd0;
             id_ex_funct3    <= 3'd0;
         end else begin
-            id_ex_valid     <= 1'b1;
-            id_ex_reg_write <= c_reg_write;
-            id_ex_mem_read  <= c_mem_read;
-            id_ex_mem_write <= c_mem_write;
-            id_ex_branch    <= c_branch;
-            id_ex_jal       <= c_jal;
-            id_ex_jalr      <= c_jalr;
-            id_ex_is_halt   <= c_is_halt;
             id_ex_wb_sel    <= c_wb_sel;
             id_ex_alu_src_a <= c_alu_src_a;
             id_ex_alu_src_b <= c_alu_src_b;
@@ -348,19 +364,23 @@ module riscv_core (
             ex_mem_reg_write  <= 1'b0;
             ex_mem_mem_read   <= 1'b0;
             ex_mem_mem_write  <= 1'b0;
-            ex_mem_wb_sel     <= 1'b0;
             ex_mem_is_halt    <= 1'b0;
-            ex_mem_result     <= 32'd0;
-            ex_mem_store_data <= 32'd0;
-            ex_mem_rd         <= 5'd0;
-            ex_mem_funct3     <= 3'd0;
         end else begin
             ex_mem_valid      <= 1'b1;
             ex_mem_reg_write  <= id_ex_reg_write;
             ex_mem_mem_read   <= id_ex_mem_read;
             ex_mem_mem_write  <= id_ex_mem_write;
-            ex_mem_wb_sel     <= id_ex_wb_sel;
             ex_mem_is_halt    <= id_ex_is_halt;
+        end
+
+        if (rst) begin
+            ex_mem_wb_sel     <= 1'b0;
+            ex_mem_result     <= 32'd0;
+            ex_mem_store_data <= 32'd0;
+            ex_mem_rd         <= 5'd0;
+            ex_mem_funct3     <= 3'd0;
+        end else begin
+            ex_mem_wb_sel     <= id_ex_wb_sel;
             ex_mem_result     <= ex_result;
             ex_mem_store_data <= ex_rs2_val;
             ex_mem_rd         <= id_ex_rd;
@@ -373,16 +393,20 @@ module riscv_core (
         if (rst || !ex_mem_valid) begin
             mem_wb_valid     <= 1'b0;
             mem_wb_reg_write <= 1'b0;
-            mem_wb_wb_sel    <= 1'b0;
             mem_wb_is_halt   <= 1'b0;
+        end else begin
+            mem_wb_valid     <= 1'b1;
+            mem_wb_reg_write <= ex_mem_reg_write;
+            mem_wb_is_halt   <= ex_mem_is_halt;
+        end
+
+        if (rst) begin
+            mem_wb_wb_sel    <= 1'b0;
             mem_wb_result    <= 32'd0;
             mem_wb_load_data <= 32'd0;
             mem_wb_rd        <= 5'd0;
         end else begin
-            mem_wb_valid     <= 1'b1;
-            mem_wb_reg_write <= ex_mem_reg_write;
             mem_wb_wb_sel    <= ex_mem_wb_sel;
-            mem_wb_is_halt   <= ex_mem_is_halt;
             mem_wb_result    <= ex_mem_result;
             mem_wb_load_data <= mem_load_data;
             mem_wb_rd        <= ex_mem_rd;

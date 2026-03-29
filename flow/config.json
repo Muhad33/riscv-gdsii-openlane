@@ -1,0 +1,39 @@
+{
+    "DESIGN_NAME": "riscv_core",
+    "VERILOG_FILES": [
+        "dir::../rtl/riscv_core.v",
+        "dir::../rtl/alu.v",
+        "dir::../rtl/control_unit.v",
+        "dir::../rtl/forwarding_unit.v",
+        "dir::../rtl/hazard_unit.v",
+        "dir::../rtl/imm_gen.v",
+        "dir::../rtl/regfile.v"
+    ],
+    "PDK": "sky130A",
+    "STD_CELL_LIBRARY": "sky130_fd_sc_hd",
+
+    "CLOCK_PORT": "clk",
+    "CLOCK_PERIOD": 25,
+
+    "SYNTH_STRATEGY": "DELAY 1",
+
+    "FP_SIZING": "relative",
+    "FP_CORE_UTIL": 40,
+    "FP_ASPECT_RATIO": 1,
+    "PL_TARGET_DENSITY_PCT": 50,
+
+    "IO_DELAY_CONSTRAINT": 20,
+    "IO_PIN_PLACEMENT_MODE": "matching",
+
+    "EXTRA_EXCLUDED_CELLS": [
+        "sky130_fd_sc_hd__clkdlybuf4s*",
+        "sky130_fd_sc_hd__dlymetal6s*"
+    ],
+
+    "DESIGN_REPAIR_MAX_SLEW_PCT": 50,
+    "DESIGN_REPAIR_MAX_CAP_PCT": 30,
+    "GRT_DESIGN_REPAIR_MAX_SLEW_PCT": 50,
+    "GRT_DESIGN_REPAIR_MAX_CAP_PCT": 30,
+    "RUN_POST_GRT_DESIGN_REPAIR": true,
+    "RUN_POST_GRT_RESIZER_TIMING": true
+}
