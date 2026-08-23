@@ -1,0 +1,63 @@
+DUT: gate (flow/runs/p20/final/nl/riscv_core.nl.v)
+test         result   cycles   instr     CPI  notes
+--------------------------------------------------------
+arith_test   PASS        106     102   1.039  
+mem_test     PASS         73      54   1.352  
+branch_test  PASS        251     163   1.540  
+hazard_test  PASS         95      70   1.357  
+fibonacci    PASS        188     146   1.288  
+bubble_sort  PASS       1396     948   1.473  
+gcd          PASS        939     607   1.547  
+random_000   PASS        215     164   1.311  
+random_001   PASS        141     117   1.205  
+random_002   PASS        236     196   1.204  
+random_003   PASS        170     140   1.214  
+random_004   PASS        185     152   1.217  
+random_005   PASS        185     151   1.225  
+random_006   PASS        155     131   1.183  
+random_007   PASS        194     161   1.205  
+random_008   PASS        144     116   1.241  
+random_009   PASS        198     154   1.286  
+random_010   PASS        250     204   1.225  
+random_011   PASS        159     133   1.195  
+random_012   PASS        190     161   1.180  
+random_013   PASS        181     146   1.240  
+random_014   PASS        199     166   1.199  
+random_015   PASS        165     134   1.231  
+random_016   PASS        198     155   1.277  
+random_017   PASS        167     136   1.228  
+random_018   PASS        173     143   1.210  
+random_019   PASS        189     160   1.181  
+random_020   PASS        192     158   1.215  
+random_021   PASS        177     145   1.221  
+random_022   PASS        190     147   1.293  
+random_023   PASS        163     135   1.207  
+random_024   PASS        189     147   1.286  
+random_025   PASS        198     161   1.230  
+random_026   PASS        150     122   1.230  
+random_027   PASS        153     124   1.234  
+random_028   PASS        148     119   1.244  
+random_029   PASS        137     108   1.269  
+random_030   PASS        173     142   1.218  
+random_031   PASS        240     199   1.206  
+random_032   PASS        181     157   1.153  
+random_033   PASS        185     157   1.178  
+random_034   PASS        187     157   1.191  
+random_035   PASS        196     148   1.324  
+random_036   PASS        168     133   1.263  
+random_037   PASS        150     125   1.200  
+random_038   PASS        183     153   1.196  
+random_039   PASS        257     210   1.224  
+random_040   PASS        131     109   1.202  
+random_041   PASS        193     154   1.253  
+random_042   PASS        210     173   1.214  
+random_043   PASS        189     156   1.212  
+random_044   PASS        231     189   1.222  
+random_045   PASS        181     144   1.257  
+random_046   PASS        201     161   1.248  
+random_047   PASS        227     183   1.240  
+random_048   PASS        138     113   1.221  
+random_049   PASS        232     180   1.289  
+--------------------------------------------------------
+random programs: 50/50 passed, mean CPI 1.228
+TOTAL: 57/57 passed -- ALL TESTS PASSED
