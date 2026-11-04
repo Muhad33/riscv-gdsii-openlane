@@ -234,14 +234,6 @@ The flow is deterministic: rerunning 25 and 20 ns reproduced the earlier results
   caught by the 7 directed programs.
 - **ISA scope.** RV32I without CSRs, interrupts or exceptions; ECALL/EBREAK halt the core.
 
-## What I learned
-
-_TODO: write a few sentences in your own words: what surprised you, what was hard, what you would do differently._
-
--
--
--
-
 ## License
 
 MIT, see [LICENSE](LICENSE). The sky130 PDK, LibreLane and the EDA tools have their own licenses.
